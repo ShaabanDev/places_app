@@ -17,20 +17,30 @@ class PlacesListCreen extends StatelessWidget {
               child: Icon(Icons.add)),
         ],
       ),
-      body: Consumer<PlacesProvider>(
-        child: Center(child: const Text('No places added !')),
-        builder: (ctx, placeData, ch) => placeData.items.length <= 0
-            ? ch!
-            : ListView.builder(
-                itemCount: placeData.items.length,
-                itemBuilder: (ctx, i) => ListTile(
-                  leading: CircleAvatar(
-                    backgroundImage: FileImage(placeData.items[i].image),
+      body: FutureBuilder(
+        future: Provider.of<PlacesProvider>(context, listen: false)
+            .fetchAndSetPlaces(),
+        builder: (ctx, snapshot) =>
+            snapshot.connectionState == ConnectionState.waiting
+                ? Center(
+                    child: CircularProgressIndicator(),
+                  )
+                : Consumer<PlacesProvider>(
+                    child: Center(child: const Text('No places added !')),
+                    builder: (ctx, placeData, ch) => placeData.items.length <= 0
+                        ? ch!
+                        : ListView.builder(
+                            itemCount: placeData.items.length,
+                            itemBuilder: (ctx, i) => ListTile(
+                              leading: CircleAvatar(
+                                backgroundImage:
+                                    FileImage(placeData.items[i].image),
+                              ),
+                              title: Text(placeData.items[i].title),
+                              onTap: () {},
+                            ),
+                          ),
                   ),
-                  title: Text(placeData.items[i].title),
-                  onTap: () {},
-                ),
-              ),
       ),
     );
   }

@@ -28,6 +28,7 @@ dependencies:
   path: ^1.8.0
   path_provider: ^2.0.2
   provider: ^6.0.0
+  sqflite: ^2.0.0+4
   video_player: ^2.1.14
 
 dev_dependencies:
